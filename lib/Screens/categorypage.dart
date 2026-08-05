@@ -27,7 +27,6 @@ class Catergorypage extends ConsumerWidget {
 
           return InkWell(
             onTap: () {
-              print("Selected Category: ${category}");
               Navigator.pop(context, category);
             },
             borderRadius: BorderRadius.circular(16),
