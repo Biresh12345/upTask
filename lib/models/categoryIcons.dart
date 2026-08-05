@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 part 'categoryIcons.g.dart';
 
 @HiveType(typeId: 1)
-class Categoryicons {
+class Categoryicons extends HiveObject {
   @HiveField(0)
   final int icon;
 
@@ -12,9 +12,21 @@ class Categoryicons {
   @HiveField(2)
   final int color;
 
-  const Categoryicons({
+  Categoryicons({
     required this.icon,
     required this.name,
     required this.color,
   });
+
+  Categoryicons copyWith({
+    int? icon,
+    String? name,
+    int? color,
+  }) {
+    return Categoryicons(
+      icon: icon ?? this.icon,
+      name: name ?? this.name,
+      color: color ?? this.color,
+    );
+  }
 }

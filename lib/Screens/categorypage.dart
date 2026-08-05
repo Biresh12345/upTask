@@ -1,3 +1,4 @@
+import 'package:UpTask/Screens/addtaskpage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,18 +57,18 @@ class Catergorypage extends ConsumerWidget {
           );
         },
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   icon: const Icon(Icons.add),
-      //   label: const Text("Add Category"),
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => const Addcategorypage(),
-      //       ),
-      //     );
-      //   },
-      // ),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.add),
+        label: const Text("Add Category"),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Addcategorypage(),
+            ),
+          );
+        },
+      ),
     );
   }
 }

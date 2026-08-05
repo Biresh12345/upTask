@@ -43,6 +43,7 @@ dependencies:
   alarm: ^5.5.0
   flutter_iconpicker: ^4.0.3
   flutter_local_notifications: ^19.4.2
+  dotted_border: ^3.1.0
 
 dev_dependencies:
   flutter_test:
