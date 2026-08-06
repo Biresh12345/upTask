@@ -24,8 +24,9 @@ final selectedCategoryProvider = StateProvider<Categoryicons?>((ref) => null);
 class Addtaskpage extends ConsumerStatefulWidget {
   final Todo? todo;
   final int? index;
+  final Categoryicons? categoryicons;
 
-  const Addtaskpage({super.key, this.todo, this.index});
+  const Addtaskpage({super.key, this.todo, this.index, this.categoryicons});
 
   @override
   ConsumerState<Addtaskpage> createState() => _AddtaskpageState();
@@ -44,8 +45,13 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
 
     if (widget.todo != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(selectedCategoryProvider.notifier).state =
-            widget.todo!.catergoryIcon!;
+        if (widget.todo != null) {
+          ref.read(selectedCategoryProvider.notifier).state =
+              widget.todo!.catergoryIcon!;
+        } else {
+          ref.read(selectedCategoryProvider.notifier).state =
+              widget.categoryicons;
+        }
 
         ref.read(datepickProvider.notifier).state =
             widget.todo!.dueDate ?? DateTime.now();
@@ -125,11 +131,7 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        IconData(
-                          selectedCategory.icon,
-                          fontFamily: CupertinoIcons.shopping_cart.fontFamily,
-                          fontPackage: CupertinoIcons.shopping_cart.fontPackage,
-                        ),
+                        Constant.icons[selectedCategory.icon],
                         color: Color(selectedCategory.color),
                         size: 35,
                       ),
@@ -431,7 +433,7 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
                   );
 
                   final notification = AppNotification(
-                    id: Random().nextInt(2147483647),
+                    id: updatedTodo.id,
                     title: updatedTodo.title,
                     body: updatedTodo.description,
                     createdAt: DateTime.now(),

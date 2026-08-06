@@ -1,3 +1,4 @@
+import 'package:UpTask/constant/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -29,16 +30,13 @@ class Viewtaskpage extends StatelessWidget {
               height: 90,
               width: 90,
               decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer,
+                color: Color(
+                  todos.catergoryIcon!.color,
+                ),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
-                IconData(
-                  todos.catergoryIcon!.icon ??
-                      CupertinoIcons.check_mark.codePoint,
-                  fontFamily: CupertinoIcons.shopping_cart.fontFamily,
-                  fontPackage: CupertinoIcons.shopping_cart.fontPackage,
-                ),
+                Constant.icons[todos.catergoryIcon!.icon],
                 size: 42,
                 color: theme.colorScheme.primary,
               ),

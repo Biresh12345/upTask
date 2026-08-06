@@ -1,3 +1,4 @@
+import 'package:UpTask/constant/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
@@ -22,8 +23,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     final theme = Theme.of(context);
     final todos = ref.watch(todoProvider);
     final upTask = ref.watch(todoProvider.notifier).listWiseDate(selectedDate);
-    print("/////");
-    print(upTask.length);
 
     final completeCount = todos
         .where((todo) =>
@@ -50,7 +49,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         title: const Text("Calendar"),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -162,12 +161,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                           ),
                           child: Icon(
                             todo.catergoryIcon != null
-                                ? IconData(
-                                    todo.catergoryIcon!.icon,
-                                    fontFamily: CupertinoIcons.book.fontFamily,
-                                    fontPackage:
-                                        CupertinoIcons.book.fontPackage,
-                                  )
+                                ? Constant.icons[todo.catergoryIcon!.icon]
                                 : Icons.task,
                             color: Colors.white,
                             size: 28,

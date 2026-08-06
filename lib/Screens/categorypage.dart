@@ -30,44 +30,23 @@ class Catergorypage extends ConsumerWidget {
         itemBuilder: (context, index) {
           final category = categoryData[index];
 
-          return InkWell(
-            onTap: () {
-              ref.read(selectedCategoryProvider.notifier).state = category;
-
-              if (fromAddTask == true) {
-                Navigator.pop(context, category);
-              } else {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const Addtaskpage(),
-                  ),
-                );
-              }
-            },
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              margin: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Color(category.color).withOpacity(.15),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    IconData(
-                      category.icon,
-                      fontFamily: CupertinoIcons.shopping_cart.fontFamily,
-                      fontPackage: CupertinoIcons.shopping_cart.fontPackage,
-                    ),
-                    size: 35,
-                    color: Color(category.color),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(category.name),
-                ],
-              ),
+          return Container(
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Color(category.color).withOpacity(.15),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Constant.icons[category.icon],
+                  size: 35,
+                  color: Color(category.color),
+                ),
+                const SizedBox(height: 8),
+                Text(category.name),
+              ],
             ),
           );
         },

@@ -20,6 +20,14 @@ class Notificationprovider extends Notifier<List<AppNotification>> {
     state.removeAt(index);
   }
 
+  Future<void> updateReadNotification(
+      AppNotification notification, int index) async {
+    final updatedNotification = notification.copyWith(isRead: true);
+    await box.putAt(index, updatedNotification);
+    final updatedList = box.values.toList();
+    state = updatedList;
+  }
+
   void clearNotification() {
     state = [];
   }

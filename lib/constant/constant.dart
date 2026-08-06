@@ -8,98 +8,28 @@ class Constant {
   static List<Categoryicons> categories = [
     Categoryicons(
       name: "Work",
-      icon: CupertinoIcons.briefcase_fill.codePoint,
+      icon: 0,
       color: Colors.blue.value,
     ),
     Categoryicons(
       name: "Personal",
-      icon: CupertinoIcons.person_fill.codePoint,
+      icon: 1,
       color: Colors.red.value,
     ),
     Categoryicons(
       name: "Health",
-      icon: CupertinoIcons.heart_fill.codePoint,
+      icon: 2,
       color: Colors.green.value,
     ),
     Categoryicons(
       name: "Study",
-      icon: CupertinoIcons.book_fill.codePoint,
+      icon: 3,
       color: Colors.purple.value,
     ),
     Categoryicons(
       name: "Shopping",
-      icon: CupertinoIcons.shopping_cart.codePoint,
+      icon: 4,
       color: Colors.orange.value,
-    ),
-    Categoryicons(
-      name: "Travel",
-      icon: CupertinoIcons.airplane.codePoint,
-      color: Colors.pink.value,
-    ),
-    Categoryicons(
-      name: "Home",
-      icon: CupertinoIcons.house_fill.codePoint,
-      color: Colors.teal.value,
-    ),
-    Categoryicons(
-      name: "Fitness",
-      icon: CupertinoIcons.sportscourt_fill.codePoint,
-      color: Colors.deepOrange.value,
-    ),
-    Categoryicons(
-      name: "Food",
-      icon: CupertinoIcons.cart_fill.codePoint,
-      color: Colors.amber.value,
-    ),
-    Categoryicons(
-      name: "Finance",
-      icon: CupertinoIcons.money_dollar_circle_fill.codePoint,
-      color: Colors.greenAccent.value,
-    ),
-    Categoryicons(
-      name: "Movie",
-      icon: CupertinoIcons.film_fill.codePoint,
-      color: Colors.indigo.value,
-    ),
-    Categoryicons(
-      name: "Music",
-      icon: CupertinoIcons.music_note.codePoint,
-      color: Colors.deepPurple.value,
-    ),
-    Categoryicons(
-      name: "Meeting",
-      icon: CupertinoIcons.person_2_fill.codePoint,
-      color: Colors.cyan.value,
-    ),
-    Categoryicons(
-      name: "Birthday",
-      icon: CupertinoIcons.gift_fill.codePoint,
-      color: Colors.pinkAccent.value,
-    ),
-    Categoryicons(
-      name: "Pets",
-      icon: CupertinoIcons.paw.codePoint,
-      color: Colors.brown.value,
-    ),
-    Categoryicons(
-      name: "Car",
-      icon: CupertinoIcons.car_detailed.codePoint,
-      color: Colors.blueGrey.value,
-    ),
-    Categoryicons(
-      name: "Phone",
-      icon: CupertinoIcons.phone_fill.codePoint,
-      color: Colors.lightGreen.value,
-    ),
-    Categoryicons(
-      name: "Ideas",
-      icon: CupertinoIcons.lightbulb_fill.codePoint,
-      color: Colors.yellow.value,
-    ),
-    Categoryicons(
-      name: "Photos",
-      icon: CupertinoIcons.camera_fill.codePoint,
-      color: Colors.deepPurpleAccent.value,
     ),
   ];
 
@@ -125,6 +55,7 @@ class Constant {
     Colors.brown,
     Colors.grey,
   ];
+
   static const List<IconData> icons = [
     // Work & Business
     CupertinoIcons.briefcase_fill,

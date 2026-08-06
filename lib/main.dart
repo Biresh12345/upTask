@@ -1,4 +1,5 @@
 import 'package:UpTask/Screens/taskpage.dart';
+import 'package:UpTask/constant/theme.dart';
 import 'package:UpTask/models/categoryIcons.dart';
 import 'package:UpTask/models/notification.dart';
 import 'package:UpTask/services/localnotificationcservice.dart';
@@ -39,8 +40,8 @@ class MyApp extends ConsumerWidget {
     final isDark = ref.watch(themeProvider);
 
     return MaterialApp(
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
         themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
         title: 'UpTask',
         debugShowCheckedModeBanner: false,

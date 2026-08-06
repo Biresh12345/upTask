@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:UpTask/Screens/taskpage.dart';
 import 'package:UpTask/constant/constant.dart';
 import 'package:UpTask/models/categoryIcons.dart';
@@ -7,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final categoryColorProvider = StateProvider<Color?>((ref) => null);
-final categoryIconProvider = StateProvider<IconData?>((ref) => null);
+final categoryIconProvider = StateProvider<int?>((ref) => null);
 final categoryNameProvider = StateProvider<String?>((ref) => null);
 
 class Addcategorypage extends ConsumerStatefulWidget {
@@ -45,6 +47,7 @@ class _AddcategorypageState extends ConsumerState<Addcategorypage> {
     final selectedColor = ref.watch(categoryColorProvider);
     final selectedIcon = ref.watch(categoryIconProvider);
     final categoryName = ref.watch(categoryNameProvider);
+    final categoryData = ref.watch(categoryProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -55,7 +58,7 @@ class _AddcategorypageState extends ConsumerState<Addcategorypage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            selectedColor != null && selectedIcon != null
+            selectedColor != null || selectedIcon != null
                 ? Container(
                     width: 100,
                     height: 100,
@@ -63,11 +66,17 @@ class _AddcategorypageState extends ConsumerState<Addcategorypage> {
                       color: selectedColor,
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(
-                      selectedIcon,
-                      size: 50,
-                      color: theme.colorScheme.surface,
-                    ),
+                    child: selectedIcon != null
+                        ? Icon(
+                            Constant.icons[selectedIcon],
+                            size: 50,
+                            color: theme.colorScheme.surface,
+                          )
+                        : Icon(
+                            Icons.dashboard_customize_outlined,
+                            size: 50,
+                            color: Colors.white,
+                          ),
                   )
                 : DottedBorder(
                     options: CircularDottedBorderOptions(
@@ -135,55 +144,6 @@ class _AddcategorypageState extends ConsumerState<Addcategorypage> {
                   ],
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        const Text("Choose Icon",
-                            style: TextStyle(fontSize: 16)),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Constant.icons.isNotEmpty
-                        ? Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: Constant.icons.map((icon) {
-                              return GestureDetector(
-                                onTap: () {
-                                  ref
-                                      .read(categoryIconProvider.notifier)
-                                      .state = icon;
-                                },
-                                child: Icon(
-                                  icon,
-                                  size: 28,
-                                  color: theme.colorScheme.onSurface,
-                                ),
-                              );
-                            }).toList(),
-                          )
-                        : const Text("No icons available"),
-                  ],
-                )),
-            const SizedBox(height: 16),
-            Container(
-                margin: const EdgeInsets.all(12),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: theme.colorScheme.surface,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    )
-                  ],
-                ),
-                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -223,6 +183,59 @@ class _AddcategorypageState extends ConsumerState<Addcategorypage> {
                   ],
                 )),
             const SizedBox(height: 16),
+            Container(
+                margin: const EdgeInsets.all(12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: theme.colorScheme.surface,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    )
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        const Text("Choose Icon",
+                            style: TextStyle(fontSize: 16)),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Constant.icons.isNotEmpty
+                        ? Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children:
+                                Constant.icons.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final icon = entry.value;
+
+                              return GestureDetector(
+                                onTap: () {
+                                  ref
+                                      .read(categoryIconProvider.notifier)
+                                      .state = index;
+                                },
+                                child: Icon(
+                                  icon,
+                                  size: 28,
+                                  color: theme.colorScheme.onSurface,
+                                ),
+                              );
+                            }).toList(),
+                          )
+                        : const Text("No icons available"),
+                  ],
+                )),
+            const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
               child: Padding(
@@ -239,19 +252,60 @@ class _AddcategorypageState extends ConsumerState<Addcategorypage> {
                   ),
                   onPressed: () {
                     final category = Categoryicons(
-                      name: ref.watch(categoryNameProvider.notifier).state ??
-                          "New Category",
-                      icon: ref
-                              .watch(categoryIconProvider.notifier)
-                              .state
-                              ?.codePoint ??
-                          Icons.dashboard_customize_outlined.codePoint,
-                      color: ref
-                              .watch(categoryColorProvider.notifier)
-                              .state
-                              ?.value ??
+                      name: ref.read(categoryNameProvider) ?? "New Category",
+                      icon: ref.read(categoryIconProvider) ?? 0,
+                      color: ref.read(categoryColorProvider)?.value ??
                           Colors.grey.value,
                     );
+
+                    if (category.name.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Please enter category name")),
+                      );
+                      return;
+                    }
+
+                    if (category.icon == 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please choose an icon")),
+                      );
+                      return;
+                    }
+
+                    if (category.color == 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please choose a color")),
+                      );
+                      return;
+                    }
+
+                    if (category.name.length > 20) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                "Category name should be less than 20 characters")),
+                      );
+                      return;
+                    }
+
+                    for (Categoryicons saveCategory in categoryData) {
+                      if (category.name == saveCategory.name) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text("Category name already exists")),
+                        );
+                        return;
+                      }
+                      if (category.icon == saveCategory.icon) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text("Category icon already exists")),
+                        );
+                        return;
+                      }
+                    }
+
                     ref.read(categoryProvider.notifier).addCategory(category);
                     Navigator.pop(context);
                   },

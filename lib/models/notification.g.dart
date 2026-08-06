@@ -21,13 +21,14 @@ class AppNotificationAdapter extends TypeAdapter<AppNotification> {
       title: fields[1] as String?,
       body: fields[2] as String?,
       createdAt: fields[3] as DateTime?,
+      isRead: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppNotification obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class AppNotificationAdapter extends TypeAdapter<AppNotification> {
       ..writeByte(2)
       ..write(obj.body)
       ..writeByte(3)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(4)
+      ..write(obj.isRead);
   }
 
   @override

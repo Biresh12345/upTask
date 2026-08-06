@@ -126,30 +126,33 @@ class Profilepage extends ConsumerWidget {
                   ]),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Remaindarpage(),
-                              ));
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.notifications,
-                            ),
-                            const SizedBox(width: 10),
-                            Text("Reminders"),
-                          ],
-                        ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Remaindarpage(),
+                          ));
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.notifications,
+                              ),
+                              const SizedBox(width: 10),
+                              Text("Reminders"),
+                            ],
+                          ),
+                          Icon(Icons.arrow_forward_ios,
+                              color: Colors.grey, size: 20)
+                        ],
                       ),
-                      Icon(Icons.arrow_forward_ios,
-                          color: Colors.grey, size: 20)
-                    ],
+                    ),
                   ),
                   Divider(),
                   Row(
@@ -221,19 +224,22 @@ class Profilepage extends ConsumerWidget {
                         ),
                       );
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.help_center_sharp),
-                            const SizedBox(width: 10),
-                            Text("Help and Support"),
-                          ],
-                        ),
-                        Icon(Icons.arrow_forward_ios,
-                            color: Colors.grey, size: 20)
-                      ],
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.help_center_sharp),
+                              const SizedBox(width: 10),
+                              Text("Help and Support"),
+                            ],
+                          ),
+                          Icon(Icons.arrow_forward_ios,
+                              color: Colors.grey, size: 20)
+                        ],
+                      ),
                     ),
                   ),
                   Divider(),
@@ -246,19 +252,22 @@ class Profilepage extends ConsumerWidget {
                           ),
                         );
                       },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.info),
-                              const SizedBox(width: 10),
-                              Text("About App"),
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios,
-                              color: Colors.grey, size: 20)
-                        ],
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.info),
+                                const SizedBox(width: 10),
+                                Text("About App"),
+                              ],
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                color: Colors.grey, size: 20)
+                          ],
+                        ),
                       )),
                 ],
               ),

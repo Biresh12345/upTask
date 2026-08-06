@@ -132,7 +132,7 @@ class _HomepageState extends ConsumerState<Taskpage> {
         ),
         elevation: 0,
         actions: [
-          todos.isNotEmpty
+          todos.isNotEmpty || notification.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -430,7 +430,8 @@ class _HomepageState extends ConsumerState<Taskpage> {
   Widget _buildTodoCard(BuildContext context,
       {required int index, required Todo todo}) {
     final isDone = todo.isCompleted;
-    // final isAlarmRinging = ref.watch(controlAlarmProvider);
+
+    final theme = Theme.of(context);
 
     return Card(
       elevation: 2,
@@ -456,12 +457,9 @@ class _HomepageState extends ConsumerState<Taskpage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
-                            color: Colors.white,
-                            IconData(
-                              todo.catergoryIcon!.icon,
-                              fontFamily: CupertinoIcons.book.fontFamily,
-                              fontPackage: CupertinoIcons.book.fontPackage,
-                            )),
+                          color: theme.colorScheme.primary,
+                          Constant.icons[todo.catergoryIcon!.icon],
+                        ),
                       )
                     : SizedBox(
                         height: 24,

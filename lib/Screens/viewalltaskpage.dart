@@ -1,4 +1,5 @@
 import 'package:UpTask/Screens/viewtaskpage.dart';
+import 'package:UpTask/constant/constant.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -100,11 +101,7 @@ class Viewalltaskpage extends ConsumerWidget {
                         ),
                         child: Icon(
                             color: Colors.white,
-                            IconData(
-                              todo.catergoryIcon!.icon,
-                              fontFamily: CupertinoIcons.book.fontFamily,
-                              fontPackage: CupertinoIcons.book.fontPackage,
-                            )),
+                            Constant.icons[todo.catergoryIcon!.icon]),
                       )
                     : SizedBox(
                         height: 24,
