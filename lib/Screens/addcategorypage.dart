@@ -1,4 +1,6 @@
+import 'package:UpTask/Screens/taskpage.dart';
 import 'package:UpTask/constant/constant.dart';
+import 'package:UpTask/models/categoryIcons.dart';
 import 'package:UpTask/widget/textField.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -133,7 +135,7 @@ class _AddcategorypageState extends ConsumerState<Addcategorypage> {
                   ],
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
                       children: [
@@ -236,7 +238,22 @@ class _AddcategorypageState extends ConsumerState<Addcategorypage> {
                     ),
                   ),
                   onPressed: () {
-                    // Handle add category logic
+                    final category = Categoryicons(
+                      name: ref.watch(categoryNameProvider.notifier).state ??
+                          "New Category",
+                      icon: ref
+                              .watch(categoryIconProvider.notifier)
+                              .state
+                              ?.codePoint ??
+                          Icons.dashboard_customize_outlined.codePoint,
+                      color: ref
+                              .watch(categoryColorProvider.notifier)
+                              .state
+                              ?.value ??
+                          Colors.grey.value,
+                    );
+                    ref.read(categoryProvider.notifier).addCategory(category);
+                    Navigator.pop(context);
                   },
                   child: const Text("Add Category"),
                 ),

@@ -1,17 +1,24 @@
+import 'package:UpTask/constant/constant.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:UpTask/models/categoryIcons.dart';
+import 'package:hive/hive.dart';
 
-class Categoryiconsprovider extends Notifier<Categoryicons?> {
+class Categoryiconsprovider extends Notifier<List<Categoryicons>> {
+  late Box<Categoryicons> box;
   @override
-  Categoryicons? build() {
-    return null;
+  List<Categoryicons> build() {
+    box = Hive.box<Categoryicons>("categoryIcons");
+    addDefaultCategory();
+    return box.values.toList();
   }
 
-  void setCategory(Categoryicons category) {
-    state = category;
+  void addDefaultCategory() {
+    box.addAll(Constant.categories);
+    state = box.values.toList();
   }
 
-  void clear() {
-    state = null;
+  void addCategory(Categoryicons category) {
+    box.add(category);
+    state = box.values.toList();
   }
 }

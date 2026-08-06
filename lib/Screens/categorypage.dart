@@ -1,34 +1,49 @@
 import 'package:UpTask/Screens/addtaskpage.dart';
+import 'package:UpTask/Screens/taskpage.dart';
+import 'package:UpTask/models/categoryIcons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:UpTask/Screens/addcategorypage.dart';
-import 'package:UpTask/Screens/taskpage.dart';
 import 'package:UpTask/constant/constant.dart';
 import 'package:UpTask/models/notes.dart';
 
 class Catergorypage extends ConsumerWidget {
-  const Catergorypage({super.key});
+  final bool? fromAddTask;
+  const Catergorypage({super.key, this.fromAddTask});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final categoryData = ref.watch(categoryProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Select Category"),
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: Constant.categories.length,
+        itemCount: categoryData.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 1,
         ),
         itemBuilder: (context, index) {
-          final category = Constant.categories[index];
+          final category = categoryData[index];
 
           return InkWell(
             onTap: () {
-              Navigator.pop(context, category);
+              ref.read(selectedCategoryProvider.notifier).state = category;
+
+              if (fromAddTask == true) {
+                Navigator.pop(context, category);
+              } else {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const Addtaskpage(),
+                  ),
+                );
+              }
             },
             borderRadius: BorderRadius.circular(16),
             child: Container(

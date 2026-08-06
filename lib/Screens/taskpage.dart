@@ -36,8 +36,8 @@ final todoProvider = NotifierProvider<TodoController, List<Todo>>(
   TodoController.new,
 );
 
-final categoryIconProvider =
-    NotifierProvider<Categoryiconsprovider, Categoryicons?>(
+final categoryProvider =
+    NotifierProvider<Categoryiconsprovider, List<Categoryicons>>(
   Categoryiconsprovider.new,
 );
 

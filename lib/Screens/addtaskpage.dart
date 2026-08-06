@@ -9,14 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:UpTask/Screens/categorypage.dart';
 import 'package:UpTask/Screens/taskpage.dart';
-import 'package:UpTask/controller/categoryIcons.dart';
 import 'package:UpTask/models/notes.dart';
 import 'package:UpTask/widget/textField.dart';
-
-final categoryIconProvider =
-    NotifierProvider<Categoryiconsprovider, Categoryicons?>(
-  Categoryiconsprovider.new,
-);
 
 final timepickProvider = StateProvider<TimeOfDay>((ref) => TimeOfDay.now());
 final datepickProvider = StateProvider<DateTime>((ref) => DateTime.now());
@@ -24,6 +18,8 @@ final datepickProvider = StateProvider<DateTime>((ref) => DateTime.now());
 final remainderState = StateProvider<bool>((ref) => true);
 
 final priorityState = StateProvider<String>((ref) => "");
+
+final selectedCategoryProvider = StateProvider<Categoryicons?>((ref) => null);
 
 class Addtaskpage extends ConsumerStatefulWidget {
   final Todo? todo;
@@ -48,9 +44,8 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
 
     if (widget.todo != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref
-            .read(categoryIconProvider.notifier)
-            .setCategory(widget.todo!.catergoryIcon!);
+        ref.read(selectedCategoryProvider.notifier).state =
+            widget.todo!.catergoryIcon!;
 
         ref.read(datepickProvider.notifier).state =
             widget.todo!.dueDate ?? DateTime.now();
@@ -66,7 +61,7 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
       });
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(categoryIconProvider.notifier).clear();
+        ref.read(selectedCategoryProvider.notifier).state = null;
         ref.read(datepickProvider.notifier).state = DateTime.now();
         ref.read(timepickProvider.notifier).state = TimeOfDay.now();
         ref.read(priorityState.notifier).state = "";
@@ -89,8 +84,7 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedIcon = ref.watch(categoryIconProvider);
-    final iconData = selectedIcon ?? widget.todo?.catergoryIcon;
+    final selectedCategory = ref.watch(selectedCategoryProvider);
     final theme = Theme.of(context);
     final pickTime = ref.watch(timepickProvider);
     final pickDate = ref.watch(datepickProvider);
@@ -113,30 +107,31 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
                 final category = await Navigator.push<Categoryicons>(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const Catergorypage(),
+                    builder: (_) => const Catergorypage(
+                      fromAddTask: true,
+                    ),
                   ),
                 );
                 if (category != null) {
-                  ref.read(categoryIconProvider.notifier).setCategory(category);
+                  ref.read(selectedCategoryProvider.notifier).state = category;
                 }
               },
-              child: iconData != null
+              child: selectedCategory != null
                   ? Container(
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: Colors.black,
-                        border: Border.all(color: Colors.grey),
+                        color: Color(selectedCategory.color).withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
                         IconData(
-                          iconData.icon,
+                          selectedCategory.icon,
                           fontFamily: CupertinoIcons.shopping_cart.fontFamily,
                           fontPackage: CupertinoIcons.shopping_cart.fontPackage,
                         ),
-                        color: Colors.amber,
-                        size: 40,
+                        color: Color(selectedCategory.color),
+                        size: 35,
                       ),
                     )
                   : Container(
@@ -150,8 +145,7 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
                     ),
             ),
             const SizedBox(height: 8),
-            Text(iconData?.name ?? "Select Category"),
-            // Task Title Container
+
             Container(
               margin: const EdgeInsets.all(12),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -404,7 +398,7 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
                     return;
                   }
 
-                  final selectedIcon = ref.read(categoryIconProvider);
+                  final selectedIcon = ref.read(categoryProvider);
 
                   if (selectedIcon == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -415,13 +409,20 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
                     return;
                   }
 
+                  if (selectedCategory == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please select a category")),
+                    );
+                    return;
+                  }
+
                   final updatedTodo = Todo(
                     id: widget.todo?.id ?? Random().nextInt(2147483647),
                     title: _titleController.text,
                     description: _descriptionController.text,
                     isCompleted: widget.todo?.isCompleted ?? false,
                     createdAt: DateTime.now(),
-                    catergoryIcon: ref.read(categoryIconProvider),
+                    catergoryIcon: selectedCategory,
                     dueDate: pickDate,
                     hours: pickTime.hour,
                     minutues: pickTime.minute,
@@ -438,7 +439,7 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
 
                   if (widget.todo == null) {
                     ref.read(todoProvider.notifier).addTodo(updatedTodo);
-                    ref.read(categoryIconProvider.notifier).clear();
+                    ref.read(selectedCategoryProvider.notifier).state = null;
                     await Localnotificationcservice.showNotification(
                       title: "✅ Task Added",
                       body: "${updatedTodo.title} has been added successfully.",

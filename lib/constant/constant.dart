@@ -101,11 +101,6 @@ class Constant {
       icon: CupertinoIcons.camera_fill.codePoint,
       color: Colors.deepPurpleAccent.value,
     ),
-    Categoryicons(
-      name: "Other",
-      icon: CupertinoIcons.square_grid_2x2_fill.codePoint,
-      color: Colors.grey.value,
-    ),
   ];
 
   static final priorities = [

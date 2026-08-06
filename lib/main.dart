@@ -20,6 +20,7 @@ void main() async {
   await Hive.openBox<Todo>("todoBox");
   await Hive.openBox("Settings");
   await Hive.openBox<AppNotification>("notification");
+  await Hive.openBox<Categoryicons>("categoryIcons");
 
   await Alarm.init();
 
