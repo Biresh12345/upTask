@@ -161,6 +161,7 @@ class AppTheme {
         fontWeight: FontWeight.bold,
       ),
     ),
+
     cardTheme: CardThemeData(
       color: const Color(0xFF1E293B),
       elevation: 0,
@@ -197,6 +198,25 @@ class AppTheme {
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: primary,
       foregroundColor: Colors.white,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primary,
+        foregroundColor: Colors.white,
+        minimumSize: const Size(double.infinity, 62), // 56 -> 62
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 18,
+        ),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        textStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
     ),
     iconTheme: const IconThemeData(
       color: Colors.white,

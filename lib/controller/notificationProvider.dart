@@ -29,6 +29,7 @@ class Notificationprovider extends Notifier<List<AppNotification>> {
   }
 
   void clearNotification() {
+    box.clear();
     state = [];
   }
 }

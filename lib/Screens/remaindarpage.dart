@@ -40,7 +40,7 @@ class Remaindarpage extends ConsumerWidget {
                   children: [
                     Text(
                       "Enable Remainders",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                     ),
                     const SizedBox(height: 5),
                     Text("Get a notification when a task is due")
@@ -53,74 +53,103 @@ class Remaindarpage extends ConsumerWidget {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.all(12),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: theme.colorScheme.surface,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                children: [
+
+                  ListTile(
+                    leading: const Icon(Icons.alarm),
+                    title: const Text("Reminder Time"),
+                    subtitle: const Text("30 minutes before"),
+                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  ),
+
+                  const Divider(height: 1),
+
+                  ListTile(
+                    leading: const Icon(Icons.alarm),
+                    title: const Text("Default Time"),
+                    subtitle: const Text("09:00 AM"),
+                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   )
-                ]),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Remainder Time",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Spacer(),
-                    Row(
-                      children: [
-                        Text("30 minutes before"),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 18,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Default Time",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Spacer(),
-                    Row(
-                      children: [
-                        Text("09:00 AM",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 18,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                )
-              ],
+
+                ],
+              ),
             ),
           ),
+          // Container(
+          //   margin: const EdgeInsets.all(12),
+          //   padding: const EdgeInsets.symmetric(horizontal: 12),
+          //   decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(12),
+          //       color: theme.colorScheme.surface,
+          //       boxShadow: [
+          //         BoxShadow(
+          //           color: Colors.grey.withOpacity(0.5),
+          //           spreadRadius: 1,
+          //           blurRadius: 5,
+          //           offset: const Offset(0, 3),
+          //         )
+          //       ]),
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //     children: [
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         children: [
+          //           Text(
+          //             "Remainder Time",
+          //             style: TextStyle(fontWeight: FontWeight.bold),
+          //           ),
+          //           Spacer(),
+          //           Row(
+          //             children: [
+          //               Text("30 minutes before"),
+          //               IconButton(
+          //                 onPressed: () {},
+          //                 icon: const Icon(
+          //                   Icons.arrow_forward_ios,
+          //                   size: 18,
+          //                 ),
+          //               ),
+          //             ],
+          //           )
+          //         ],
+          //       ),
+          //       Divider(),
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         children: [
+          //           Text(
+          //             "Default Time",
+          //             style: TextStyle(fontWeight: FontWeight.bold),
+          //           ),
+          //           Spacer(),
+          //           Row(
+          //             children: [
+          //               Text("09:00 AM",
+          //                   style: TextStyle(fontWeight: FontWeight.bold)),
+          //               IconButton(
+          //                 onPressed: () {},
+          //                 icon: const Icon(
+          //                   Icons.arrow_forward_ios,
+          //                   size: 18,
+          //                 ),
+          //               ),
+          //             ],
+          //           )
+          //         ],
+          //       )
+          //     ],
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Row(

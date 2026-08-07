@@ -51,7 +51,7 @@ class BottomNavScreen extends ConsumerWidget {
           NavigationDestination(
             icon: Icon(Icons.person_outline),
             selectedIcon: Icon(Icons.person),
-            label: "Settings",
+            label: "Profile",
           ),
         ],
       ),

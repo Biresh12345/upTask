@@ -236,82 +236,76 @@ class _AddcategorypageState extends ConsumerState<Addcategorypage> {
                   ],
                 )),
             const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: theme.colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () {
-                    final category = Categoryicons(
-                      name: ref.read(categoryNameProvider) ?? "New Category",
-                      icon: ref.read(categoryIconProvider) ?? 0,
-                      color: ref.read(categoryColorProvider)?.value ??
-                          Colors.grey.value,
-                    );
-
-                    if (category.name.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text("Please enter category name")),
-                      );
-                      return;
-                    }
-
-                    if (category.icon == 0) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Please choose an icon")),
-                      );
-                      return;
-                    }
-
-                    if (category.color == 0) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Please choose a color")),
-                      );
-                      return;
-                    }
-
-                    if (category.name.length > 20) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text(
-                                "Category name should be less than 20 characters")),
-                      );
-                      return;
-                    }
-
-                    for (Categoryicons saveCategory in categoryData) {
-                      if (category.name == saveCategory.name) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text("Category name already exists")),
-                        );
-                        return;
-                      }
-                      if (category.icon == saveCategory.icon) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text("Category icon already exists")),
-                        );
-                        return;
-                      }
-                    }
-
-                    ref.read(categoryProvider.notifier).addCategory(category);
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Add Category"),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colorScheme.primary,
+                foregroundColor: theme.colorScheme.onPrimary,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
+              onPressed: () {
+                final category = Categoryicons(
+                  name: ref.read(categoryNameProvider) ?? "New Category",
+                  icon: ref.read(categoryIconProvider) ?? 0,
+                  color: ref.read(categoryColorProvider)?.value ??
+                      Colors.grey.value,
+                );
+
+                if (category.name.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text("Please enter category name")),
+                  );
+                  return;
+                }
+
+                if (category.icon == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please choose an icon")),
+                  );
+                  return;
+                }
+
+                if (category.color == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please choose a color")),
+                  );
+                  return;
+                }
+
+                if (category.name.length > 20) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text(
+                            "Category name should be less than 20 characters")),
+                  );
+                  return;
+                }
+
+                for (Categoryicons saveCategory in categoryData) {
+                  if (category.name == saveCategory.name) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text("Category name already exists")),
+                    );
+                    return;
+                  }
+                  if (category.icon == saveCategory.icon) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text("Category icon already exists")),
+                    );
+                    return;
+                  }
+                }
+
+                ref.read(categoryProvider.notifier).addCategory(category);
+                Navigator.pop(context);
+              },
+              child: const Text("Add Category"),
             ),
           ],
         ),

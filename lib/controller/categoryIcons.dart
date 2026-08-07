@@ -24,4 +24,10 @@ class Categoryiconsprovider extends Notifier<List<Categoryicons>> {
     box.add(category);
     state = box.values.toList();
   }
+
+  void deleteCategory(Categoryicons category) {
+    int index = state.indexOf(category);
+    box.deleteAt(index);
+    state = box.values.toList();
+  }
 }

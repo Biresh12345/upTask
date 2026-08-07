@@ -17,6 +17,10 @@ class Notificationpage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Notification"),
+        leading: IconButton(icon: Icon(Icons.arrow_back) ,onPressed: (){
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        },),
         actions: [
           IconButton(
             icon: Icon(
@@ -70,6 +74,7 @@ class Notificationpage extends ConsumerWidget {
                           MaterialPageRoute(
                             builder: (_) => Viewtaskpage(
                               todos: todos[index],
+                              index: index,
                             ),
                           ),
                         );

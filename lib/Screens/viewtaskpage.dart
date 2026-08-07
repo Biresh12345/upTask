@@ -1,25 +1,60 @@
+import 'package:UpTask/Screens/taskpage.dart';
 import 'package:UpTask/constant/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:UpTask/models/notes.dart';
 
-class Viewtaskpage extends StatelessWidget {
+class Viewtaskpage extends ConsumerWidget {
   final Todo todos;
+  final int index;
 
   const Viewtaskpage({
     super.key,
     required this.todos,
+    required this.index,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Task Details"),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("Delete Task"),
+                  content:
+                      const Text("Are you sure you want to delete this task?"),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Cancel"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        ref.read(todoProvider.notifier).deleteTodo(index);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Delete"),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -38,7 +73,7 @@ class Viewtaskpage extends StatelessWidget {
               child: Icon(
                 Constant.icons[todos.catergoryIcon!.icon],
                 size: 42,
-                color: theme.colorScheme.primary,
+                color: Colors.black,
               ),
             ),
 

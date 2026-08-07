@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:UpTask/Screens/notificationpage.dart';
 import 'package:UpTask/Screens/viewtaskpage.dart';
+import 'package:UpTask/controller/applockcontroller.dart';
 import 'package:UpTask/controller/notificationProvider.dart';
 import 'package:UpTask/controller/themeprovider.dart';
 import 'package:UpTask/models/notification.dart';
@@ -56,6 +57,10 @@ final themeProvider = NotifierProvider<ThemeProvider, bool>(
 final notificationProvider =
     NotifierProvider<Notificationprovider, List<AppNotification>>(
   Notificationprovider.new,
+);
+
+final applockProvider = NotifierProvider<Applockcontroller, bool>(
+  Applockcontroller.new,
 );
 
 class Taskpage extends ConsumerStatefulWidget {
@@ -395,7 +400,8 @@ class _HomepageState extends ConsumerState<Taskpage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Viewtaskpage(todos: todo),
+                              builder: (context) =>
+                                  Viewtaskpage(todos: todo, index: index),
                             ),
                           );
                         },
@@ -436,6 +442,7 @@ class _HomepageState extends ConsumerState<Taskpage> {
     return Card(
       elevation: 2,
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
+      shadowColor: Colors.white.withOpacity(0.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
       ),
@@ -457,7 +464,7 @@ class _HomepageState extends ConsumerState<Taskpage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
-                          color: theme.colorScheme.primary,
+                          color: theme.colorScheme.shadow,
                           Constant.icons[todo.catergoryIcon!.icon],
                         ),
                       )

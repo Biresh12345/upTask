@@ -2,6 +2,7 @@ import 'package:UpTask/Screens/taskpage.dart';
 import 'package:UpTask/constant/theme.dart';
 import 'package:UpTask/models/categoryIcons.dart';
 import 'package:UpTask/models/notification.dart';
+import 'package:UpTask/services/localauthservice.dart';
 import 'package:UpTask/services/localnotificationcservice.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ import 'package:UpTask/widget/bottomnavigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Hive.initFlutter();
   Hive.registerAdapter(CategoryiconsAdapter());
   Hive.registerAdapter(TodoAdapter());
@@ -22,6 +22,12 @@ void main() async {
   await Hive.openBox("Settings");
   await Hive.openBox<AppNotification>("notification");
   await Hive.openBox<Categoryicons>("categoryIcons");
+
+  final isLock = Hive.box("Settings").get("isLock", defaultValue: false);
+
+  if (isLock) {
+    await Localauthservice.authenticate();
+  }
 
   await Alarm.init();
 

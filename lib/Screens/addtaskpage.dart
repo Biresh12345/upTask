@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:UpTask/Screens/settingpage.dart';
 import 'package:UpTask/constant/constant.dart';
 import 'package:UpTask/models/categoryIcons.dart';
 import 'package:UpTask/models/notification.dart';
@@ -17,7 +18,7 @@ final datepickProvider = StateProvider<DateTime>((ref) => DateTime.now());
 
 final remainderState = StateProvider<bool>((ref) => true);
 
-final priorityState = StateProvider<String>((ref) => "");
+final priorityState = StateProvider<String>((ref) => "Medium");
 
 final selectedCategoryProvider = StateProvider<Categoryicons?>((ref) => null);
 
@@ -39,6 +40,10 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+      final defaultPriority = ref.read(defaultPriorityProvider);
+      ref.read(priorityState.notifier).state = defaultPriority;
+    });
     _titleController = TextEditingController(text: widget.todo?.title ?? '');
     _descriptionController =
         TextEditingController(text: widget.todo?.description ?? '');
@@ -361,117 +366,115 @@ class _AddtaskpageState extends ConsumerState<Addtaskpage> {
               ),
             ),
             const SizedBox(height: 12),
-
-            // Action Button
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              width: double.maxFinite,
-              child: FloatingActionButton.extended(
-                backgroundColor: theme.colorScheme.primaryContainer,
-                label: Text(widget.todo == null ? "Add Task" : "Update Task"),
-                onPressed: () async {
-                  if (_titleController.text.trim().isEmpty) {
-                    ScaffoldMessenger.of(context).showMaterialBanner(
-                      MaterialBanner(
-                        backgroundColor: Colors.yellow[300],
-                        content:
-                            const Text("Please enter a title for the task"),
-                        actions: [
-                          TextButton(
-                            onPressed: () async {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentMaterialBanner();
-                            },
-                            child: const Text("Okay"),
-                          ),
-                        ],
-                      ),
-                    );
-
-                    return;
-                  }
-
-                  if (_descriptionController.text.trim().isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Enter a description"),
-                      ),
-                    );
-                    return;
-                  }
-
-                  final selectedIcon = ref.read(categoryProvider);
-
-                  if (selectedIcon == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Please select a category"),
-                      ),
-                    );
-                    return;
-                  }
-
-                  if (selectedCategory == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please select a category")),
-                    );
-                    return;
-                  }
-
-                  final updatedTodo = Todo(
-                    id: widget.todo?.id ?? Random().nextInt(2147483647),
-                    title: _titleController.text,
-                    description: _descriptionController.text,
-                    isCompleted: widget.todo?.isCompleted ?? false,
-                    createdAt: DateTime.now(),
-                    catergoryIcon: selectedCategory,
-                    dueDate: pickDate,
-                    hours: pickTime.hour,
-                    minutues: pickTime.minute,
-                    priority: priority,
-                    remainderme: isRemainder,
-                  );
-
-                  final notification = AppNotification(
-                    id: updatedTodo.id,
-                    title: updatedTodo.title,
-                    body: updatedTodo.description,
-                    createdAt: DateTime.now(),
-                  );
-
-                  if (widget.todo == null) {
-                    ref.read(todoProvider.notifier).addTodo(updatedTodo);
-                    ref.read(selectedCategoryProvider.notifier).state = null;
-                    await Localnotificationcservice.showNotification(
-                      title: "✅ Task Added",
-                      body: "${updatedTodo.title} has been added successfully.",
-                    );
-                    ref
-                        .read(notificationProvider.notifier)
-                        .addNotification(notification);
-                  } else {
-                    if (widget.index != null) {
-                      ref
-                          .read(todoProvider.notifier)
-                          .updateTodo(widget.index!, updatedTodo);
-                      await Localnotificationcservice.showNotification(
-                        title: "✏️ Task Updated",
-                        body:
-                            "${updatedTodo.title} has been updated successfully.",
-                      );
-                    }
-                  }
-
-                  ref.read(timeProvider.notifier).scheduleAlarm(updatedTodo);
-                  _resetFields();
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            const SizedBox(height: 24),
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: theme.colorScheme.primary,
+            foregroundColor: theme.colorScheme.onPrimary,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          onPressed: () async {
+            if (_titleController.text.trim().isEmpty) {
+              ScaffoldMessenger.of(context).showMaterialBanner(
+                MaterialBanner(
+                  backgroundColor: Colors.black,
+                  content: const Text("Please enter a title for the task"),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        ScaffoldMessenger.of(context)
+                            .hideCurrentMaterialBanner();
+                      },
+                      child: const Text("Okay"),
+                    ),
+                  ],
+                ),
+              );
+
+              return;
+            }
+
+            if (_descriptionController.text.trim().isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Enter a description"),
+                ),
+              );
+              return;
+            }
+
+            final selectedIcon = ref.read(categoryProvider);
+
+            if (selectedIcon == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Please select a category"),
+                ),
+              );
+              return;
+            }
+
+            if (selectedCategory == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Please select a category")),
+              );
+              return;
+            }
+
+            final updatedTodo = Todo(
+              id: widget.todo?.id ?? Random().nextInt(2147483647),
+              title: _titleController.text,
+              description: _descriptionController.text,
+              isCompleted: widget.todo?.isCompleted ?? false,
+              createdAt: DateTime.now(),
+              catergoryIcon: selectedCategory,
+              dueDate: pickDate,
+              hours: pickTime.hour,
+              minutues: pickTime.minute,
+              priority: priority,
+              remainderme: isRemainder,
+            );
+
+            final notification = AppNotification(
+              id: updatedTodo.id,
+              title: updatedTodo.title,
+              body: updatedTodo.description,
+              createdAt: DateTime.now(),
+            );
+
+            if (widget.todo == null) {
+              ref.read(todoProvider.notifier).addTodo(updatedTodo);
+              ref.read(selectedCategoryProvider.notifier).state = null;
+              await Localnotificationcservice.showNotification(
+                title: "✅ Task Added",
+                body: "${updatedTodo.title} has been added successfully.",
+              );
+              ref
+                  .read(notificationProvider.notifier)
+                  .addNotification(notification);
+            } else {
+              if (widget.index != null) {
+                ref
+                    .read(todoProvider.notifier)
+                    .updateTodo(widget.index!, updatedTodo);
+                await Localnotificationcservice.showNotification(
+                  title: "✏️ Task Updated",
+                  body: "${updatedTodo.title} has been updated successfully.",
+                );
+              }
+            }
+
+            ref.read(timeProvider.notifier).scheduleAlarm(updatedTodo);
+            _resetFields();
+            Navigator.pop(context);
+          },
+          child: Text(widget.todo == null ? "Add Task" : "Update Task")),
     );
   }
 

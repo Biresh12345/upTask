@@ -47,229 +47,411 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Calendar"),
+        centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
+
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        children: [
+
+          // Date Picker Card
+          Card(
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: DatePicker(
+                theme: DatePickerPlusTheme(
+                  headerTheme: HeaderTheme(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                minDate: DateTime(2020),
+                maxDate: DateTime(2035),
+
+                onDateSelected: (date){
+                  setState(() {
+                    selectedDate = date;
+                  });
+                },
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: DatePicker(
-                  theme: DatePickerPlusTheme(
-                    headerTheme: HeaderTheme(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(14),
+            ),
+          ),
+
+
+          const SizedBox(height:25),
+
+
+          sectionTitle("Selected Date"),
+
+
+          Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor:
+                Colors.blue.withOpacity(.15),
+                child: const Icon(
+                  Icons.calendar_month,
+                  color: Colors.blue,
+                ),
+              ),
+
+              title: Text(
+                DateFormat("EEEE, dd MMM yyyy")
+                    .format(selectedDate),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+
+
+
+          const SizedBox(height:25),
+
+
+
+          sectionTitle("Today's Progress"),
+
+
+          Card(
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+
+            child: Padding(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                children: [
+
+                  Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
+
+                    children: [
+
+                      Text(
+                        "$completeCount Completed",
+                        style: const TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+
+
+                      Text(
+                        "$pendingCount Pending",
+                        style: const TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+
+                    ],
                   ),
-                  minDate: DateTime(2020),
-                  maxDate: DateTime(2035),
-                  // initialDate: selectedDate,
-                  onDateSelected: (date) async {
-                    setState(() {
-                      selectedDate = date;
-                    });
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 25),
-            Text(
-              "Selected Date",
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 10),
-            Card(
-              child: ListTile(
-                leading: const CircleAvatar(
-                  child: Icon(Icons.calendar_month),
-                ),
-                title: Text(
-                  DateFormat("EEEE, dd MMM yyyy").format(selectedDate),
-                ),
-              ),
-            ),
-            const SizedBox(height: 25),
-            Text(
-              "Today's Progress",
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 10),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    LinearProgressIndicator(
+
+
+                  const SizedBox(height:15),
+
+
+                  ClipRRect(
+                    borderRadius:
+                    BorderRadius.circular(20),
+
+                    child: LinearProgressIndicator(
+                      minHeight: 10,
                       value: progress,
+                      backgroundColor:
+                      Colors.grey.shade300,
+
+                      color: Colors.green,
                     ),
-                    const SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Completed"),
-                        Text("${completeCount} / ${pendingCount} Tasks"),
-                      ],
-                    )
-                  ],
-                ),
+                  ),
+
+                ],
               ),
             ),
-            const SizedBox(height: 25),
-            Text(
-              "Tasks",
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 10),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: upTask.length,
-              itemBuilder: (context, index) {
-                final todo = upTask[index];
+          ),
 
-                final priorityColor = todo.priority == "Low"
-                    ? Colors.green
-                    : todo.priority == "Medium"
-                        ? Colors.orange
-                        : Colors.red;
 
-                return Card(
-                  elevation: 2,
-                  margin: const EdgeInsets.only(bottom: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(14),
-                    child: Row(
-                      children: [
-                        // Category Icon
-                        Container(
-                          width: 55,
-                          height: 55,
-                          decoration: BoxDecoration(
-                            color: Color(todo.catergoryIcon!.color),
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: Icon(
-                            todo.catergoryIcon != null
-                                ? Constant.icons[todo.catergoryIcon!.icon]
-                                : Icons.task,
-                            color: Colors.white,
-                            size: 28,
-                          ),
+
+          const SizedBox(height:25),
+
+
+          sectionTitle("Tasks"),
+
+
+
+          ListView.builder(
+            shrinkWrap:true,
+            physics:
+            const NeverScrollableScrollPhysics(),
+
+            itemCount: upTask.length,
+
+
+            itemBuilder:(context,index){
+
+              final todo = upTask[index];
+
+
+              final priorityColor =
+              todo.priority=="Low"
+                  ? Colors.green
+                  : todo.priority=="Medium"
+                  ? Colors.orange
+                  : Colors.red;
+
+
+              return Card(
+
+                margin:
+                const EdgeInsets.only(bottom:14),
+
+                elevation:3,
+
+                shape:
+                RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.circular(20),
+                ),
+
+
+                child: Padding(
+
+                  padding:
+                  const EdgeInsets.all(14),
+
+
+                  child: Row(
+
+                    children:[
+
+
+                      Container(
+
+                        height:55,
+                        width:55,
+
+
+                        decoration:
+                        BoxDecoration(
+
+                          color:
+                          Color(todo
+                              .catergoryIcon!
+                              .color),
+
+                          borderRadius:
+                          BorderRadius.circular(16),
                         ),
 
-                        const SizedBox(width: 14),
 
-                        // Task Details
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                todo.title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
-                              ),
-                              if (todo.description != null &&
-                                  todo.description!.isNotEmpty)
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: Text(
-                                    todo.description!,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.access_time,
-                                    size: 16,
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    "${todo.hours?.toString().padLeft(2, '0')}:${todo.minutues?.toString().padLeft(2, '0')}",
-                                    style: const TextStyle(color: Colors.grey),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  const Icon(
-                                    Icons.flag,
-                                    size: 16,
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 3,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: priorityColor.withOpacity(.15),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Text(
-                                      todo.priority ?? "Normal",
-                                      style: TextStyle(
-                                        color: priorityColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        child: Icon(
+                          Constant.icons[
+                          todo.catergoryIcon!.icon
+                          ],
+
+                          color:Colors.white,
                         ),
 
-                        const SizedBox(width: 10),
+                      ),
 
-                        // Status
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: todo.isCompleted
-                                ? Colors.green.withOpacity(.15)
-                                : Colors.orange.withOpacity(.15),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            todo.isCompleted ? "Done" : "Open",
-                            style: TextStyle(
-                              color: todo.isCompleted
-                                  ? Colors.green
-                                  : Colors.orange,
-                              fontWeight: FontWeight.bold,
+
+
+                      const SizedBox(width:15),
+
+
+
+                      Expanded(
+
+                        child:Column(
+
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+
+
+                          children:[
+
+
+                            Text(
+                              todo.title,
+
+                              style:
+                              const TextStyle(
+
+                                fontSize:17,
+
+                                fontWeight:
+                                FontWeight.bold,
+
+                              ),
                             ),
-                          ),
+
+
+
+                            const SizedBox(height:5),
+
+
+
+                            Row(
+
+                              children:[
+
+                                const Icon(
+                                  Icons.access_time,
+                                  size:15,
+                                  color:Colors.grey,
+                                ),
+
+
+                                const SizedBox(width:5),
+
+
+                                Text(
+                                  "${todo.hours}:${todo.minutues}",
+                                  style:
+                                  const TextStyle(
+                                    color:Colors.grey,
+                                  ),
+                                ),
+
+
+
+                                const SizedBox(width:12),
+
+
+
+                                Container(
+
+                                  padding:
+                                  const EdgeInsets.symmetric(
+                                    horizontal:10,
+                                    vertical:4,
+                                  ),
+
+
+                                  decoration:
+                                  BoxDecoration(
+
+                                    color:
+                                    priorityColor
+                                        .withOpacity(.15),
+
+                                    borderRadius:
+                                    BorderRadius.circular(20),
+                                  ),
+
+
+                                  child:Text(
+
+                                    todo.priority ??
+                                        "Normal",
+
+                                    style:
+                                    TextStyle(
+                                      color:
+                                      priorityColor,
+
+                                      fontSize:12,
+
+                                      fontWeight:
+                                      FontWeight.bold,
+                                    ),
+
+                                  ),
+
+                                )
+
+                              ],
+
+                            )
+
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+
+
+
+                      Container(
+
+                        padding:
+                        const EdgeInsets.symmetric(
+                          horizontal:10,
+                          vertical:5,
+                        ),
+
+
+                        decoration:
+                        BoxDecoration(
+
+                          color:
+                          todo.isCompleted
+                              ? Colors.green.withOpacity(.15)
+                              : Colors.orange.withOpacity(.15),
+
+                          borderRadius:
+                          BorderRadius.circular(20),
+
+                        ),
+
+
+                        child:Text(
+
+                          todo.isCompleted
+                              ?"Done"
+                              :"Open",
+
+                          style:
+                          TextStyle(
+
+                            color:
+                            todo.isCompleted
+                                ?Colors.green
+                                :Colors.orange,
+
+                            fontWeight:
+                            FontWeight.bold,
+
+                          ),
+
+                        ),
+
+                      )
+
+                    ],
+
                   ),
-                );
-              },
-            )
-          ],
+                ),
+
+              );
+
+            },
+
+          )
+
+        ],
+      ),
+    );
+  }
+  Widget sectionTitle(String title){
+    return Padding(
+      padding: const EdgeInsets.only(bottom:10),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize:18,
+          fontWeight:FontWeight.bold,
         ),
       ),
     );

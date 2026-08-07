@@ -55,7 +55,8 @@ class Viewalltaskpage extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Viewtaskpage(todos: todo),
+                        builder: (context) =>
+                            Viewtaskpage(todos: todo, index: index),
                       ),
                     );
                   },

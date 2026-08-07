@@ -216,7 +216,6 @@ class Constant {
   ];
 
   static const String aboutApp = '''
-About Todo App
 
 Todo App is a simple and efficient task management application designed to help you stay organized and productive. Whether you're managing personal tasks, work projects, or daily routines, Todo App makes it easy to keep everything in one place.
 

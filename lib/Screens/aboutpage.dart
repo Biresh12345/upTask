@@ -8,7 +8,9 @@ class Aboutpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("About App"),
+      ),
       body: Text(
         Constant.aboutApp.toString(),
         textAlign: TextAlign.center,
